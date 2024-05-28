@@ -4,7 +4,7 @@ class product:
 
     def __init__(self, name, price, quantity):
         self.name = name
-        self.price = price
+        self.price = pric
         self.quantity = quantity
         self.active = quantity > 0
     def
