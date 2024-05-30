@@ -40,7 +40,8 @@ def start(store):
                 product_choice = input("Which product # do you want? ")
                 if product_choice == "":
                     break
-                if not product_choice.isdigit() or int(product_choice) < 1 or int(product_choice) > len(store.products):
+                if not product_choice.isdigit() or int(product_choice) < 1 or \
+                   int(product_choice) > len(products):
                     print("Invalid choice, please enter a valid product number.")
                     continue
                 product_index = int(product_choice) - 1

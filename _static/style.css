@@ -1,52 +1,55 @@
+/* styles.css */
+
 body {
-  background: #F5F5F0;
-  color: black;
-  font-family: Monaco;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f0f0;
 }
 
-.list-movies-title {
-  padding: 10px 0;
-  background: #009B50;
-  color: white;
-  text-align: center;
-  font-size: 16pt;
+.menu {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.movie-grid {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
+.menu h1 {
+    text-align: center;
+    color: #333;
+    padding: 20px 0;
+    margin: 0;
+    background-color: #f8f8f8;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
-.movie-grid li {
-  padding: 10px 15px;
-  text-align: left;
+.menu button {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 10px 20px;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.movie {
-  width: 140px;
+.menu button:hover {
+    background-color: #45a049;
 }
 
-.movie-title,
-.movie-year {
-  font-size: 0.8em;
-  text-align: center;
+.output {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.movie-title {
-  margin-top: 10px;
-}
-
-.movie-year {
-  color: #999;
-}
-
-
-.movie-poster {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    width: 128px;
-    height: 193px;
+.output h2 {
+    color: #333;
+    margin-top: 0;
 }
