@@ -1,28 +1,65 @@
-# Setup initial stock of inventory
+# main.py
+
+from store import Store
+from products import Product
+
 def start(store):
     while True:
-        print("Store Menu")
+        print("\nStore Menu")
         print("==========")
+        print("1. List all products in store")
+        print("2. Show total quantity in store")
+        print("3. Make an order")
+        print("4. Quit")
 
-        choice = input(int("Please choose a number: "))
+        choice = input("Please choose a number: ")
+
+        if choice.isdigit():
+            choice = int(choice)
+        else:
+            print("Invalid choice! Please enter a number.")
+            continue
 
         if choice == 1:
-            store.list_all_product()
-            print("1. List all products in store")
+            products = store.get_all_products()
+            for product in products:
+                print(product)
         elif choice == 2:
-            store.show_total_amount()
-            print("2. Show total amount in store.")
+            total_quantity = store.get_total_quantity()
+            print(f"Total quantity in store: {total_quantity}")
         elif choice == 3:
-            store.make_an_oder()
-            print("3. Make an order.")
+            print("------")
+            products = store.get_all_products()
+            for index, product in enumerate(products, start=1):
+                print(f"{index}. {product}")
+            print("------")
+            print("When you want to finish order, enter empty text.")
+
+            shopping_list = []
+            while True:
+                product_choice = input("Which product # do you want? ")
+                if product_choice == "":
+                    break
+                if not product_choice.isdigit() or int(product_choice) < 1 or int(product_choice) > len(store.products):
+                    print("Invalid choice, please enter a valid product number.")
+                    continue
+                product_index = int(product_choice) - 1
+                product = store.products[product_index]
+                quantity = int(input(f"Enter quantity for {product.name}: "))
+                shopping_list.append((product, quantity))
+
+            total_price = store.order(shopping_list)
+            print(f"Total price for the order: ${total_price:.2f}")
         elif choice == 4:
-            print("4. Quit")
+            print("Quitting the program.")
             break
         else:
-            print("Error with your choice! Try again!")
+            print("Invalid choice! Try again.")
 
-    return  # Exit the function when the loop is finished
-
-
-# Call the start function to begin the program
-
+if __name__ == "__main__":
+    store = Store([
+        Product("MacBook Air M2", 1450, 100),
+        Product("Bose QuietComfort Earbuds", 250, 500),
+        Product("Google Pixel 7", 500, 250),
+    ])
+    start(store)
