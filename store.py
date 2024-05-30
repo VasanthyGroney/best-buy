@@ -1,4 +1,13 @@
-# setup initial stock of inventory
+class Product:
+    def __init__(self, name, price, quantity):
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+
+    def __repr__(self):
+        return f"{self.name} (Price: {self.price}, Quantity: {self.quantity})"
+
+
 class Store:
     def __init__(self, products=None):
         if products is None:
@@ -42,17 +51,5 @@ class Store:
 
 
 
-bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
-mac = products.Product("MacBook Air M2", price=1450, quantity=100)
-
-store = Store([bose, mac])
-
-pixel = products.Product("Google Pixel 7", price=500, quantity=250)
-store.add_product(pixel)
 
 
-product_list = [ products.Product("MacBook Air M2", price=1450, quantity=100),
-                 products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                 products.Product("Google Pixel 7", price=500, quantity=250)
-               ]
-best_buy = store.Store(product_list)
