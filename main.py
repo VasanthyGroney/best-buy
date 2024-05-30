@@ -23,7 +23,7 @@ def start(store):
         if choice == 1:
             products = store.get_all_products()
             for product in products:
-                print(product)
+                product.show()
         elif choice == 2:
             total_quantity = store.get_total_quantity()
             print(f"Total quantity in store: {total_quantity}")
@@ -31,7 +31,7 @@ def start(store):
             print("------")
             products = store.get_all_products()
             for index, product in enumerate(products, start=1):
-                print(f"{index}. {product}")
+                print(f"{index}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
             print("------")
             print("When you want to finish order, enter empty text.")
 
@@ -45,8 +45,9 @@ def start(store):
                     continue
                 product_index = int(product_choice) - 1
                 product = store.products[product_index]
-                quantity = int(input(f"Enter quantity for {product.name}: "))
+                quantity = int(input(f"What amount do you want? "))
                 shopping_list.append((product, quantity))
+                print("Product added to list!")
 
             total_price = store.order(shopping_list)
             print(f"Total price for the order: ${total_price:.2f}")
@@ -57,9 +58,10 @@ def start(store):
             print("Invalid choice! Try again.")
 
 if __name__ == "__main__":
-    store = Store([
+    product_list = [
         Product("MacBook Air M2", 1450, 100),
         Product("Bose QuietComfort Earbuds", 250, 500),
         Product("Google Pixel 7", 500, 250),
-    ])
+    ]
+    store = Store(product_list)
     start(store)

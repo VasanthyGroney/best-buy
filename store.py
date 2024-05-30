@@ -1,11 +1,4 @@
-class Product:
-    def __init__(self, name, price, quantity):
-        self.name = name
-        self.price = price
-        self.quantity = quantity
-
-    def __repr__(self):
-        return f"{self.name} (Price: {self.price}, Quantity: {self.quantity})"
+from products import Product
 
 
 class Store:
