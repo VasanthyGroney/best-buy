@@ -21,19 +21,36 @@
             margin: 10px 0;
             padding: 10px;
             font-size: 16px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        .button-list {
+            background-color: #4CAF50; /* Green */
+        }
+        .button-quantity {
+            background-color: #2196F3; /* Blue */
+        }
+        .button-order {
+            background-color: #FF007F; /* Rose */
+        }
+        .button-quit {
+            background-color: #555555; /* Gray */
         }
         .output {
             margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
     <div class="menu">
         <h1>Store Menu</h1>
-        <button onclick="listProducts()">1. List all products in store</button>
-        <button onclick="showTotalQuantity()">2. Show total quantity in store</button>
-        <button onclick="makeOrder()">3. Make an order</button>
-        <button onclick="quit()">4. Quit</button>
+        <button class="button-list" onclick="listProducts()">1. List all products in store</button>
+        <button class="button-quantity" onclick="showTotalQuantity()">2. Show total quantity in store</button>
+        <button class="button-order" onclick="makeOrder()">3. Make an order</button>
+        <button class="button-quit" onclick="quit()">4. Quit</button>
     </div>
     <div class="output" id="output"></div>
 
@@ -44,7 +61,13 @@
             { name: "Google Pixel 7", price: 500, quantity: 250 }
         ];
 
+        function clearOutput() {
+            const output = document.getElementById("output");
+            output.innerHTML = '';
+        }
+
         function listProducts() {
+            clearOutput();
             const output = document.getElementById("output");
             output.innerHTML = "<h2>All Products</h2>";
             products.forEach((product, index) => {
@@ -53,39 +76,54 @@
         }
 
         function showTotalQuantity() {
+            clearOutput();
             const output = document.getElementById("output");
             const totalQuantity = products.reduce((total, product) => total + product.quantity, 0);
             output.innerHTML = `<h2>Total Quantity</h2><p>Total quantity in store: ${totalQuantity}</p>`;
         }
 
         function makeOrder() {
+            clearOutput();
             const output = document.getElementById("output");
             output.innerHTML = "<h2>Make an Order</h2>";
             products.forEach((product, index) => {
                 output.innerHTML += `<p>${index + 1}. ${product.name}, Price: $${product.price}, Quantity: ${product.quantity}</p>`;
             });
-            output.innerHTML += `<p>To place an order, enter the product number and quantity in the console (e.g., order(1, 2) for 2 units of product 1).</p>`;
+            output.innerHTML += `
+                <p>Enter product number and quantity:</p>
+                <p>Product Number: <input type="number" id="productNumber" min="1" max="${products.length}"></p>
+                <p>Quantity: <input type="number" id="quantity" min="1"></p>
+                <button onclick="submitOrder()">Submit Order</button>
+                <div id="orderConfirmation"></div>
+            `;
+        }
+
+        function submitOrder() {
+            const productNumber = parseInt(document.getElementById("productNumber").value);
+            const quantity = parseInt(document.getElementById("quantity").value);
+            if (isNaN(productNumber) || isNaN(quantity) || productNumber < 1 || productNumber > products.length || quantity < 1) {
+                document.getElementById("orderConfirmation").innerHTML = `<p>Please enter valid product number and quantity.</p>`;
+            } else {
+                order(productNumber, quantity);
+            }
         }
 
         function order(productNumber, quantity) {
-            const output = document.getElementById("output");
+            const output = document.getElementById("orderConfirmation");
             const productIndex = productNumber - 1;
-            if (productIndex >= 0 && productIndex < products.length) {
-                const product = products[productIndex];
-                if (quantity > 0 && quantity <= product.quantity) {
-                    product.quantity -= quantity;
-                    output.innerHTML = `<p>Order placed for ${quantity} units of ${product.name}. Remaining quantity: ${product.quantity}</p>`;
-                } else {
-                    output.innerHTML = `<p>Invalid quantity. Please enter a quantity between 1 and ${product.quantity}.</p>`;
-                }
+            const product = products[productIndex];
+            if (quantity <= product.quantity) {
+                product.quantity -= quantity;
+                output.innerHTML = `<p>Order placed for ${quantity} units of ${product.name}. Remaining quantity: ${product.quantity}</p>`;
             } else {
-                output.innerHTML = `<p>Invalid product number. Please enter a number between 1 and ${products.length}.</p>`;
+                output.innerHTML = `<p>Invalid quantity. Please enter a quantity between 1 and ${product.quantity}.</p>`;
             }
         }
 
         function quit() {
+            clearOutput();
             const output = document.getElementById("output");
-            output.innerHTML = "<h2>Quitting the program.</h2>";
+            output.innerHTML = "<h2>Quitting the program.</h2><p>Thank you for using the store menu. Have a great day!</p>";
         }
     </script>
 </body>
