@@ -13,5 +13,6 @@
         -Automatically update the inventory based on processed orders.
         -Calculate the total price of orders.
 
-    Overall, the project provides a flexible and scalable solution for managing store inventory and processing customer orders efficiently.
+Overall, the project provides a flexible and scalable solution for managing store inventory and 
+processing customer orders efficiently.
 
