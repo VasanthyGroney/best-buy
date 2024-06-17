@@ -1,80 +1,68 @@
+from store import Store
 from products import Product
 
+def start(store):
+    while True:
+        print("\nStore Menu")
+        print("==========")
+        print("1. List all products in store")
+        print("2. Show total quantity in store")
+        print("3. Make an order")
+        print("4. Quit")
 
-class Store:
-    def __init__(self, products=None):
-        """
-        Initialize a new store with a list of products.
+        choice = input("Please choose a number: ")
 
-        :param products: A list of Product objects.
-        """
-        if products is None:
-            self.products = []
-        elif isinstance(products, list) and all(isinstance(p, Product) for p in products):
-            self.products = products
+        if choice.isdigit():
+            choice = int(choice)
         else:
-            raise ValueError("Products must be a list of Product objects")
+            print("Invalid choice! Please enter a number.")
+            continue
 
-    def add_product(self, product: Product):
-        """
-        Add a product to the store.
+        if choice == 1:
+            products = store.get_all_products()
+            for product in products:
+                product.show()
+        elif choice == 2:
+            total_quantity = store.get_total_quantity()
+            print(f"Total quantity in store: {total_quantity}")
+        elif choice == 3:
+            print("------")
+            products = store.get_all_products()
+            for index, product in enumerate(products, start=1):
+                print(f"{index}. {product.name}, Price: ${product.price}, Quantity: {product.quantity}")
+            print("------")
+            print("When you want to finish order, enter empty text.")
 
-        :param product: The Product object to add.
-        """
-        if not isinstance(product, Product):
-            raise ValueError("Invalid product")
-        self.products.append(product)
-        print(f"Product {product.name} is added")
+            shopping_list = []
+            while True:
 
-    def remove_product(self, product: Product):
-        """
-        Remove a product from the store.
+                product_choice = input("Which product # do you want? ")
+                if product_choice == "":
+                    break
+                if not product_choice.isdigit() or int(product_choice) < 1 or \
+                   int(product_choice) > len(products):
+                    print("Invalid choice, please enter a valid product number.")
+                    continue
+                product_index = int(product_choice) - 1
+                product = store.products[product_index]
+                quantity = int(input(f"What amount do you want? "))
+                shopping_list.append((product, quantity))
+                print("Product added to list!")
 
-        :param product: The Product object to remove.
-        """
-        if not isinstance(product, Product):
-            raise ValueError("Invalid product")
-        if product in self.products:
-            self.products.remove(product)
-            print(f"Product {product.name} removed from store.")
+            total_price = store.order(shopping_list)
+            if total_price > 0:
+                print(f"Total price for the order: ${total_price:.2f}")
+        elif choice == 4:
+            print("Quitting the program.")
+            break
         else:
-            print(f"Product {product.name} not available")
+            print("Invalid choice! Try again.")
 
-    def get_total_quantity(self) -> int:
-        """
-        Get the total quantity of all products in the store.
-
-        :return: The total quantity.
-        """
-        total_quantity = sum(product.quantity for product in self.products)
-        return total_quantity
-
-    def get_all_products(self) -> list:
-        """
-        Get a list of all products in the store.
-
-        :return: A list of Product objects.
-        """
-        return list(self.products)
-
-    def order(self, shopping_list: list) -> float:
-        """
-        Process an order for a list of products.
-
-        :param shopping_list: A list of tuples containing Product objects and quantities.
-        :return: The total price for the order.
-        """
-        total_price = 0.0
-        for product, quantity in shopping_list:
-            if not isinstance(product, Product):
-                raise ValueError("Invalid product")
-            if not isinstance(quantity, int) or quantity < 0:
-                raise ValueError("Quantity must be a non-negative integer")
-            if product in self.products:
-                try:
-                    total_price += product.buy(quantity)
-                except ValueError as e:
-                    print(f"Could not order {product.name}: {e}")
-            else:
-                print(f"Product {product.name} not available in the store")
-        return total_price
+if __name__ == "__main__":
+    product_list = [
+        Product("MacBook Air M2", 1450, 100),
+        Product("Bose QuietComfort Earbuds", 250, 500),
+        Product("Google Pixel 7", 500, 250),
+    ]
+    store = Store(product_list)
+    start(store)
