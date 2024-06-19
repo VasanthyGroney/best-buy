@@ -3,9 +3,6 @@ class Product:
         """
         Initialize a new product with a name, price, and quantity.
 
-        :param name: Name of the product.
-        :param price: Price of the product.
-        :param quantity: Quantity of the product in stock.
         """
         if not isinstance(name, str) or not name:
             raise ValueError("Name must be a non-empty string")
@@ -43,6 +40,7 @@ class Product:
         """
         Display the details of the product.
         """
+        super().show()
         print(f"Product: {self.name}, Price: ${self.price}, Quantity: {self.quantity}")
 
     def set_quantity(self, quantity: int):
@@ -54,3 +52,27 @@ class Product:
         if not isinstance(quantity, int) or quantity < 0:
             raise ValueError("Quantity must be a non-negative integer")
         self.quantity = quantity
+
+
+class NonStockedProduct(Product):
+    def __init__(self, name: str, price: float):
+        super().__init__(name, price, 0)
+
+    def set_quantity(self, quantity: int):
+        self.quantity = 0
+
+    def buy(self, amount: int) -> float:
+        return self.price * amount
+
+    def show(self):
+        print(f"Product: {self.name}, Price: ${self.price}, Quantity: Unlimited")
+
+class LimitedProduct(Product):
+    def __init__(self, name, price, quantity, maximum):
+        super().__init__(name, price, quantity)
+        self.maximum = maximum
+
+    def buy(self, amount):
+        if amount > self.maximum:
+            return f"Cannot buy more than {self.maximum} units of {self.name} at a time."
+        return super().buy(amount)
