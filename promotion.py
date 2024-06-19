@@ -42,5 +42,3 @@ class ThirdOneFree(Promotion):
         total_price = payable_items * product.price
         return total_price
 
-
-
